@@ -1,0 +1,4 @@
+# Dependencies for UnifiedAuthContrib
+DBI, >=0, cpan, Required.
+DBD::SQLite, >=0, cpan, Recommended (and required if you do not set up a database config).
+Text::Unidecode, >=0, cpan, Recommended (for transliterating Unicode WikiNames).

@@ -1,0 +1,13 @@
+# Release manifest for UnifiedAuthContrib
+!noci
+data/System/UnifiedAuthContrib.txt 0644 Documentation
+lib/Foswiki/Contrib/UnifiedAuthContrib.pm 0644 Contrib base module
+lib/Foswiki/LoginManager/UnifiedLogin.pm 0644 Login manager
+lib/Foswiki/Plugins/UnifiedAuthPlugin.pm 0644 Tag handlers
+lib/Foswiki/UnifiedAuth.pm 0644 Main mapping module
+lib/Foswiki/UnifiedAuth/Provider.pm 0644 Base module for auth providers
+lib/Foswiki/UnifiedAuth/Providers/Google.pm 0644 OAuth for Google
+lib/Foswiki/Users/UnifiedAuthUser.pm 0644 Password manager
+lib/Foswiki/Users/UnifiedUserMapping.pm 0644 User mapping
+lib/Foswiki/Contrib/UnifiedAuthContrib/Config.spec 0644 Config options
+templates/uauth.tmpl 0644 Template file

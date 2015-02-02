@@ -1,0 +1,56 @@
+%META:TOPICPARENT{name="Contribs"}%
+---+!! !UnifiedAuthContrib
+<!--
+One line description, required for extensions repository catalog.
+   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
+-->
+%SHORTDESCRIPTION%
+
+%TOC%
+
+This extension provides:
+
+   * A user mapping, assigning readable names to each user.
+      * For each of the existing authentication providers (listed below), a mapping is provided.
+   * A login manager that supports authentication from multiple sources (auth providers). The following sources are currently supported:
+      * Foswiki's !BaseUserMapping (specifically, !AdminUser)
+      * Google accounts
+   * A mapping for groups and group memberships that supports multiple data source. The following sources are currently supported:
+      * Foswiki's System.TopicUserMappingContrib (copied implementation; this will be improved later)
+   * A small plugin to handle user interface for selecting an auth provider (not implemented yet). The plugin must be enabled in order for logins to work.
+
+Internally, the mapping data is stored in a database. Unless you provide your own configuration, this is an SQLite database file.
+
+---++ Settings
+The main settings are made via the =/bin/configure= interface or =LocalSite.cfg=. They are documented in the configuration interface. The details of how to configure each authentication provider live here, so as to not overload the configuration interface with text.
+
+---+++ Auth provider configuration
+
+Auth providers are configured in ={UnifiedAuth}{Providers}=. You can set up the same auth provider multiple times with different settings, giving each instance a different ID. The =config= hash is different for each provider; for providers shipped with !UnifiedAuthContrib, documentation follows.
+
+---++++ Google
+
+   * =client_id=: The ID for your Google API access, registered in Google's developer console.
+   * =client_secret=: The secret token for your Google API access.
+   * =domain=: optional; if set, only Google accounts on this domain can be used.
+   * =wikiname_format=: how to generate wiki names from the account data. This can use field names as provided by Google (e.g. =name=, =email=, =given_name=, =family_name=). Field names must be prefixed by a =$= sign to be expanded. Any characters not permitted in wiki names will be eliminated after expansion. (Defaults to =$name=)
+   * =displayname_format=: same, but for the readable display name. (Defaults to =$name=)
+
+---++ Installation Instructions
+
+%$INSTALL_INSTRUCTIONS%
+
+---++ Contrib Info
+
+|  Author(s): | Foswiki:Main.JanKrueger |
+|  Copyright: | Copyright (C) 2015 Modell Aachen GmbH |
+|  License: | [[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]] |
+|  Version: | %$VERSION% |
+|  Release: | %$RELEASE% |
+|  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  0.1 (02 Feb 2015) | First public version |
+|  Dependencies: | %$DEPENDENCIES% |
+|  Contrib Home: | http://foswiki.org/Extensions/%TOPIC% |
+|  Support: | http://foswiki.org/Support/%TOPIC% | 
+
+<!-- Do _not_ attempt to edit this topic; it is auto-generated. Please add comments/questions/remarks to the Dev topic instead. -->

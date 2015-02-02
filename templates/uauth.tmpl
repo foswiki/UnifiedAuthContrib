@@ -1,0 +1,45 @@
+%TMPL:INCLUDE{"login"}%
+
+%TMPL:DEF{"LOG_IN_BANNER"}%%TMPL:END%
+%TMPL:DEF{"LOGGED_IN_BANNER"}%%MAKETEXT{"[_1] is currently logged in" args="%USERSWEB%.%WIKINAME%"}%%TMPL:END%
+%TMPL:DEF{"NEW_USER_NOTE"}%%MAKETEXT{"Enter a new username and password to change identity"}%%TMPL:END%
+%TMPL:DEF{"AUTH_FAILURE"}%%MAKETEXT{"We could not authenticate you. The following error occurred: [_1]" args="$percntUAUTH_AUTH_FAILURE_MESSAGE$percnt"}%%TMPL:END%
+%TMPL:DEF{"UNRECOGNISED_USER"}%%MAKETEXT{"Oops: we could not recognize you. Try again or [[[_1]][reset your password]]." args="%SCRIPTURLPATH{view}%/%SYSTEMWEB%/ResetPassword?username=%URLPARAM{usernamestep}%"}%%TMPL:END%
+
+%{ TODO custom auth realm info? l10n? }%
+%TMPL:DEF{"authrealm"}%%MAKETEXT{"This is your name written as !WikiWord, for example: !JohnSmith. [[[_1]][Register]] if you do not have an account yet." args="%SYSTEMWEB%.UserRegistration"}%%TMPL:END%
+
+%TMPL:DEF{"formstart"}%<form action='%SCRIPTURLPATH{"uauth"}%%PATH_INFO%' name='loginform' method='post'>%TMPL:END%
+
+%TMPL:DEF{"usernamestep"}%<div class="foswikiFormStep">
+<h3>%MAKETEXT{"Username"}%</h3>
+<p>%TMPL:P{"usernamefield"}% %TMPL:P{"usernamefieldhelplink"}%</p>%TMPL:P{"usernamefieldhelpcontents"}%
+</div>%TMPL:END%
+
+%TMPL:DEF{"passwordnote"}%<span class="foswikiUnvisited">[[%SCRIPTURLPATH{view}%/%SYSTEMWEB%/ResetPassword?username=%URLPARAM{usernamestep}%][%MAKETEXT{"I forgot my password"}%]]</span>%TMPL:END%
+
+%TMPL:DEF{"form"}%<div id="foswikiLogin">
+<div class="foswikiFormSteps">%TMPL:P{"formstart"}%%TMPL:P{"titlestep"}%
+%TMPL:P{"usernamestep"}%%TMPL:P{"passwordstep"}%%TMPL:P{"submitstep"}%
+%TMPL:P{"formend"}%
+%TMPL:P{"seealsostep"}%
+</div>
+</div>%TMPL:END%
+
+%TMPL:DEF{"auth_providers"}%%RED%In a future version you will get a list of available login providers here.%ENDCOLOR%%TMPL:END%
+
+%TMPL:DEF{"link_retry"}%<div id="foswikiLogin">
+<div class="foswikiFormSteps">
+  %TMPL:P{"errorstep"}%
+  <div class="foswikiFormStep">%MAKETEXT{"You have the following options now:"}%
+    <ul>
+      <li><a href="%SCRIPTURLPATH{login}%">%MAKETEXT{"Try again"}%</a>
+      <li><a href="%SCRIPTURLPATH{logon}%?sudo=sudo">%MAKETEXT{"Log into an internal account"}%</a>
+    </ul>
+  </div>
+</div></div>%TMPL:END%
+
+%TMPL:DEF{"content"}%%TMPL:P{context="uauth_login_default" then="form"
+}%%TMPL:P{context="uauth_failed_nochoose" then="link_retry"
+}%%TMPL:P{context="uauth_choose" then="auth_providers"
+}%%TMPL:END%
