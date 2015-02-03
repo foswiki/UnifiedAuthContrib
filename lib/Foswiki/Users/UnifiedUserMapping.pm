@@ -305,7 +305,7 @@ sub _getListOfGroups {
 
         # Temporarily set the user to admin, otherwise it cannot see groups
         # where %USERSWEB% is protected from view
-        local $this->{session}->{user} = $Foswiki::cfg{SuperAdminGroup};
+        local $this->{session}->{user} = 'BaseUserMapping_333';
 
         $this->{session}->search->searchWeb(
             _callback => \&_collateGroups,
