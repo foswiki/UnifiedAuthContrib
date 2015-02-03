@@ -192,7 +192,7 @@ sub findUserByEmail {
 
     return $this->{uac}->db->selectcol_arrayref(
         "SELECT user_id FROM users WHERE email=?", {}, $email
-    );
+    ) || [];
 }
 
 =begin TML
@@ -258,7 +258,7 @@ sub findUserByWikiName {
 
     return [$wn] if $this->isGroup($wn);
     return $this->{uac}->db->selectrow_arrayref(
-        "SELECT user_id FROM users WHERE wiki_name=?", {}, $wn);
+        "SELECT user_id FROM users WHERE wiki_name=?", {}, $wn) || [];
 }
 
 
