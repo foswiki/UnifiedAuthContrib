@@ -195,7 +195,37 @@ sub findUserByEmail {
     ) || [];
 }
 
-=begin TML
+sub getEmails {
+    my ( $this, $user, $seen ) = @_;
+
+    $seen ||= {};
+
+    my %emails = ();
+
+    if ( $seen->{$user} ) {
+
+        #print STDERR "preventing infinit recursion in getEmails($user)\n";
+    }
+    else {
+        $seen->{$user} = 1;
+
+        if ( $this->isGroup($user) ) {
+            my $it = $this->eachGroupMember($user);
+            while ( $it->hasNext() ) {
+                foreach ( $this->getEmails( $it->next(), $seen ) ) {
+                    $emails{$_} = 1;
+                }
+            }
+        }
+        else {
+            foreach ( mapper_getEmails( $this->{session}, $user ) ) {
+                $emails{$_} = 1;
+            }
+        }
+    }
+    return keys %emails;
+}
+
 
 =begin TML
 
