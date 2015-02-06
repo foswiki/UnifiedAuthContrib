@@ -169,7 +169,7 @@ sub eachUser {
     my ($this) = @_;
 
     my $list = $this->{uac}->db->selectcol_arrayref(
-        "SELECT user_id u FROM users WHERE NOT EXISTS (SELECT NULL FROM user_mappings WHERE user_id=u LIMIT 1)"
+        "SELECT user_id u FROM users"
     );
     return new Foswiki::ListIterator($list);
 }
