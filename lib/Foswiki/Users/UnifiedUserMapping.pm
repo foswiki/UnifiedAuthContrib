@@ -227,19 +227,6 @@ sub getEmails {
 }
 
 
-=begin TML
-
----++ StaticMethod mapper_getEmails($session, $user)
-
-Only used if passwordManager->isManagingEmails= = =false
-(The emails are stored in the user topics.
-
-Note: This method is PUBLIC because it is used by the tools/upgrade_emails.pl
-script, which needs to kick down to the mapper to retrieve email addresses
-from Wiki topics.
-
-=cut
-
 sub mapper_getEmails {
     my ( $session, $user ) = @_;
 
@@ -251,14 +238,7 @@ sub mapper_getEmails {
     return split(';', $addr);
 }
 
-=begin TML
-
----++ StaticMethod mapper_setEmails ($session, $user, @emails)
-
-Only used if =passwordManager->isManagingEmails= = =false=.
-(emails are stored in user topics
-
-=cut
+# TODO add support for changing user e-mail addresses
 
 sub mapper_setEmails {
     my $session = shift;
@@ -270,18 +250,6 @@ sub mapper_setEmails {
     $uac->db->do("UPDATE users SET emails=? WHERE user_id=?", {},
         $mails, $cUID);
 }
-
-=begin TML
-
----++ ObjectMethod findUserByWikiName ($wikiname) -> list of cUIDs associated with that wikiname
-
-See baseclass for documentation
-
-The $skipExistanceCheck parameter
-is private to this module, and blocks the standard existence check
-to avoid reading .htpasswd when checking group memberships).
-
-=cut
 
 sub findUserByWikiName {
     my ( $this, $wn, $skipExistanceCheck ) = @_;
@@ -415,14 +383,6 @@ sub _expandUserList {
     return \@l;
 }
 
-=begin TML
-
----++ ObjectMethod eachGroupMember ($group) ->  listIterator of cUIDs
-
-See baseclass for documentation
-
-=cut
-
 my %expanding;    # Prevents loops in nested groups
 
 sub eachGroupMember {
@@ -503,14 +463,6 @@ sub eachGroupMember {
     return new Foswiki::ListIterator( $this->{eachGroupMember}->{$group} );
 }
 
-=begin TML
-
----++ ObjectMethod isGroup ($user) -> boolean
-
-See baseclass for documentation
-
-=cut
-
 sub isGroup {
     my ( $this, $user ) = @_;
 
@@ -533,27 +485,11 @@ sub isGroup {
     return 0;
 }
 
-=begin TML
-
----++ ObjectMethod eachGroup () -> ListIterator of groupnames
-
-See baseclass for documentation
-
-=cut
-
 sub eachGroup {
     my ($this) = @_;
     _getListOfGroups($this);
     return new Foswiki::ListIterator( \@{ $this->{groupsList} } );
 }
-
-=begin TML
-
----++ ObjectMethod eachMembership ($cUID) -> ListIterator of groups this user is in
-
-See baseclass for documentation
-
-=cut
 
 sub eachMembership {
     my ( $this, $user ) = @_;
@@ -565,16 +501,6 @@ sub eachMembership {
     };
     return $it;
 }
-
-=begin TML
-
----++ ObjectMethod groupAllowsView($group) -> boolean
-
-returns 1 if the group is able to be viewed by the current logged in user
-
-implemented using topic VIEW permissions
-
-=cut
 
 sub groupAllowsView {
     my $this  = shift;
@@ -598,16 +524,6 @@ sub groupAllowsView {
     return Foswiki::Func::checkAccessPermission( 'VIEW', $user, undef,
         $groupName, $groupWeb );
 }
-
-=begin TML
-
----++ ObjectMethod groupAllowsChange($group, $cuid) -> boolean
-
-returns 1 if the group is able to be modified by $cuid
-
-implemented using topic CHANGE permissions
-
-=cut
 
 sub groupAllowsChange {
     my $this  = shift;
@@ -634,16 +550,6 @@ sub groupAllowsChange {
     return Foswiki::Func::checkAccessPermission( 'CHANGE', $user, undef,
         $groupName, $groupWeb );
 }
-
-=begin TML
-
----++ ObjectMethod addToGroup( $cuid, $group, $create ) -> $boolean
-adds the user specified by the cuid to the group.
-If the group does not exist, it will return false and do nothing, unless the create flag is set.
-
-cuid be a groupname which is added like it was an unknown user
-
-=cut
 
 sub addUserToGroup {
     my ( $this, $cuid, $Group, $create ) = @_;
@@ -847,12 +753,6 @@ sub _writeGroupTopic {
 
 }
 
-=begin TML
-
----++ ObjectMethod removeFromGroup( $cuid, $group ) -> $boolean
-
-=cut
-
 sub removeUserFromGroup {
     my ( $this, $cuid, $groupName ) = @_;
     $groupName = Foswiki::Sandbox::untaint( $groupName,
@@ -935,19 +835,6 @@ sub removeUserFromGroup {
 
     return 0;
 }
-
-=begin TML
-
----++ ObjectMethod _clearGroupCache( $groupName )
-
-Removes the cache entries for unexpanded and expanded groups,
-and searches un-expanded groups for any nesting group references
-clearing them as well.
-
-Note:  This is not recursive and does not attempt to handle
-more than one level of nested groups.
-
-=cut
 
 sub _clearGroupCache {
     my ( $this, $groupName ) = @_;

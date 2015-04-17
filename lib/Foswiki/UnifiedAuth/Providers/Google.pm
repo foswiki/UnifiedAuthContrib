@@ -47,6 +47,7 @@ sub _makeOAuth {
         client_id => $this->{config}{client_id},
         client_secret => $this->{config}{client_secret},
         site => '',
+        secrets_in_params => 0,
         authorize_url => $json->{authorization_endpoint},
         access_token_url => $json->{token_endpoint},
     );
