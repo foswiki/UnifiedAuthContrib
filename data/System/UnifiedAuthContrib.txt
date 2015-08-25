@@ -36,6 +36,20 @@ Auth providers are configured in ={UnifiedAuth}{Providers}=. You can set up the 
    * =wikiname_format=: how to generate wiki names from the account data. This can use field names as provided by Google (e.g. =name=, =email=, =given_name=, =family_name=). Field names must be prefixed by a =$= sign to be expanded. Any characters not permitted in wiki names will be eliminated after expansion. (Defaults to =$name=)
    * =displayname_format=: same, but for the readable display name. (Defaults to =$name=)
 
+---++++ IpRange
+
+Allows automatically logging in a user based on their IP address. This makes it possible to grant restricted, guest-like access based on a user's location.
+
+   * =ip_range=: an arrayref or a single value. Each value is either an IP address range (e.g. '192.168.1.0-192.168.1.255') or a netblock in CIDR notation. (Individual IP addresses must be specified as e.g. 1.2.3.4/32 or ::/128.) Both IPv4 and IPv6 are supported.
+   * =exclude_ip_range=: if set, similar to =ip_range= but prevents these addresses from getting authenticated even if they match one of the IP ranges given in =ip_range=.
+   * =user_id=: The user ID (of an existing !UnifiedAuth user) which this auth provider authenticates. Anyone logging in from one of the addresses in =ip_range= is automatically assigned this user ID.
+
+If you want to automatically create the user in question, include the following fields, too. Since the user will only be created once, these fields have no effect afterwards.
+
+   * =wiki_name=: The WikiName assigned to the user.
+   * =display_name=: The display name.
+   * =email=: Optionally, assign an e-mail address.
+
 ---++ Installation Instructions
 
 %$INSTALL_INSTRUCTIONS%

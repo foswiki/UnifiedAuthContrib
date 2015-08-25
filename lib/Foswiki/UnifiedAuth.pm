@@ -52,7 +52,17 @@ my @schema_updates = (
             PRIMARY KEY (group_id, user_id)
         )",
         "CREATE INDEX group_members_user_id ON group_members (user_id)",
-        # TODO schema needs more schema
+    ],
+    [
+        "ALTER TABLE groups ADD COLUMN mapper_id TEXT",
+        "ALTER TABLE group_members ADD COLUMN mapper_id TEXT",
+        "CREATE TABLE group_mappings (
+            group_id TEXT NOT NULL,
+            mapper_id TEXT NOT NULL,
+            mapped_id TEXT NOT NULL,
+            PRIMARY KEY (group_id, mapper_id, mapped_id),
+            UNIQUE (mapper_id, mapped_id)
+        )",
     ],
 );
 

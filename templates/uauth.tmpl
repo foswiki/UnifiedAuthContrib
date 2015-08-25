@@ -19,14 +19,17 @@
 %TMPL:DEF{"passwordnote"}%<span class="foswikiUnvisited">[[%SCRIPTURLPATH{view}%/%SYSTEMWEB%/ResetPassword?username=%URLPARAM{usernamestep}%][%MAKETEXT{"I forgot my password"}%]]</span>%TMPL:END%
 
 %TMPL:DEF{"form"}%<div id="foswikiLogin">
-<div class="foswikiFormSteps">%TMPL:P{"formstart"}%%TMPL:P{"titlestep"}%
+<div class="foswikiFormSteps">%TMPL:P{"errorstep"}%%TMPL:P{"formstart"}%%TMPL:P{"titlestep"}%
 %TMPL:P{"usernamestep"}%%TMPL:P{"passwordstep"}%%TMPL:P{"submitstep"}%
 %TMPL:P{"formend"}%
 %TMPL:P{"seealsostep"}%
 </div>
 </div>%TMPL:END%
 
-%TMPL:DEF{"auth_providers"}%%RED%In a future version you will get a list of available login providers here.%ENDCOLOR%%TMPL:END%
+%TMPL:DEF{"auth_providers"}%
+%TMPL:P{"errorstep"}%
+%RED%In a future version you will get a list of available login providers here.%ENDCOLOR%
+%TMPL:END%
 
 %TMPL:DEF{"link_retry"}%<div id="foswikiLogin">
 <div class="foswikiFormSteps">

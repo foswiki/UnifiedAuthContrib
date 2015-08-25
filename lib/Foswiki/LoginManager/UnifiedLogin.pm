@@ -178,6 +178,7 @@ sub login {
             };
             if ($@) {
                 $error = $@;
+                $error = $@->text if ref($@) && $@->isa("Error");
             }
             if (ref($loginResult) eq 'HASH' && $loginResult->{user_id}) {
                 $this->userLoggedIn($loginResult->{user_id});
@@ -195,7 +196,7 @@ sub login {
                 my ( $origurl, $origmethod, $origaction ) = _unpackRequest($provider->origin);
                 my $current_uri = $query->uri;
                 $current_uri =~ s/\?.*$//;
-                my ($origurl_noquery) = ($origurl =~ /^(.*)(?:\?.*)?$/);
+                my ($origurl_noquery) = ($origurl =~ /^(.*?)(?:\?.*)?$/);
                 if (!$origurl || $origurl_noquery eq $current_uri) {
                     $origurl = $session->getScriptUrl(0, 'view', $web, $topic);
                     $session->{request}->delete_all;
@@ -239,6 +240,14 @@ sub login {
                 BANNER => $banner,
             );
         }
+    }
+
+    if (my $forceauthid = $session->{request}->param('uauth_force_provider')) {
+        if (!exists $Foswiki::cfg{UnifiedAuth}{Providers}{$forceauthid}) {
+            die "Invalid authentication source requested";
+        }
+        my $auth = $this->_authProvider($forceauthid);
+        return $auth->initiateLogin(_packRequest($session));
     }
 
     if (my $authid = $Foswiki::cfg{UnifiedAuth}{DefaultAuthProvider}) {

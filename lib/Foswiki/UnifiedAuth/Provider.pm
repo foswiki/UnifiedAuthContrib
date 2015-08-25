@@ -29,6 +29,7 @@ sub initiateLogin {
     $cgis->param('uauth_state', $state);
     $cgis->param('uauth_provider', $this->{id});
     $cgis->flush;
+    die $cgis->errstr if $cgis->errstr;
     return $state;
 }
 
